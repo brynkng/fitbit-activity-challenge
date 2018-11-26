@@ -1,0 +1,15 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["react"],
+  "rules": {
+    "no-undef": [ 1 ],
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error"
+  },
+  "globals": {
+    "localStorage": true,
+    "console": true,
+    "Promise": true,
+    "process": true
+  }
+}

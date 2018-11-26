@@ -1,16 +1,14 @@
 import React from "react";
 import Login from "./login";
 import Dashboard from "./dashboard";
+import {isLoggedIn} from "../api/fitbit_data";
 
 const Home = props => {
-    let loggedIn = localStorage.getItem('access-token');
-
     return (
         <div>
-            { loggedIn ? <Dashboard /> : <Login />}
+            { isLoggedIn() ? <Dashboard /> : <Login />}
         </div>
     );
 };
-
 
 export default Home;

@@ -6,6 +6,7 @@
     "@material-ui/core": "^3.5.1",
     "axios": "^0.18.0",
     "base64url": "^3.0.0",
+    "eslint-plugin-react": "^7.11.1",
     "js-sha256": "^0.9.0",
     "moment": "^2.22.2",
     "query-string": "^6.2.0",
