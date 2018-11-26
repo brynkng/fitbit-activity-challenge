@@ -21,7 +21,7 @@ class Dashboard extends Component {
             this.setState({zones: zones});
         }).catch(error => {
             resetFitbitTokens();
-            this.props.history.push('/');
+            this.props.history.push('/', {error: error.toString()});
         });
     }
 
