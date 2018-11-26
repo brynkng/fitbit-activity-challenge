@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "activity-challenge",
+  "alias": "activity-challenge",
+  "builds": [
+    { "src": "package.json", "use": "@now/static-build" }
+  ],
+  "routes": [
+    {"src": "^/static/(.*)", "dest": "/static/$1"},
+    {"src": ".*", "dest": "/index.html"}
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "dotenv": ".env.production"
+}
