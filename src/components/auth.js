@@ -16,7 +16,11 @@ class Auth extends Component {
            fitbitAuthorize(params.code).then(r => {
                 this.props.history.push('/');
             }).catch(error => {
-                this.setState({message: "Error: " + JSON.stringify(error.response.data.errors)})
+                if (error.response && error.response.data) {
+                    error = error.response.data.errors
+                }
+
+                this.setState({message: "Error: " + JSON.stringify(error)})
             });
 
         } else {

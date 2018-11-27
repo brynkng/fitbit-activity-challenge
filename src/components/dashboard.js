@@ -8,12 +8,11 @@ class Dashboard extends Component {
 
     state = {
         zones: [],
-        steps: null,
-        stepModifier: 150,
-        point_system: {
-            "Fat Burn": .5,
-            "Cardio": 3,
-            "Peak": 6
+        active_minutes: 0,
+        active_modifier: 2,
+        hr_point_system: {
+            "Cardio": 1,
+            "Peak": 2
         }
     };
 
@@ -21,9 +20,10 @@ class Dashboard extends Component {
 
         getActivities().then(r => {
             const zones = r.data.summary.heartRateZones,
-                steps = r.data.summary.steps;
+                active_minutes = r.data.summary.fairlyActiveMinutes + r.data.summary.veryActiveMinutes;
 
-            this.setState({zones: zones, steps: steps});
+            // debugger
+            this.setState({zones: zones, active_minutes: active_minutes});
         }).catch(error => {
             resetFitbitTokens();
             this.props.history.push('/', {error: error.toString()});
@@ -32,25 +32,25 @@ class Dashboard extends Component {
 
     render() {
 
-        let filteredZones = this.state.zones.filter(z => z.name !== 'Out of Range'),
-            zones = filteredZones.map(
-                z => <div key={z.name}><strong>{z.name}</strong>: {z.minutes} minutes = {this.state.point_system[z.name] * z.minutes} points</div>
+        let filtered_zones = this.state.zones.filter(z => ['Cardio', 'Peak'].includes(z.name)),
+            zones = filtered_zones.map(
+                z => <div key={z.name}><strong>{z.name}</strong>: {z.minutes} minutes = {this.state.hr_point_system[z.name] * z.minutes} points</div>
             ),
-            totalPoints = filteredZones.reduce((acc, z) => acc + (this.state.point_system[z.name] * z.minutes), 0),
-            stepPoints = Math.round(this.state.steps / this.state.stepModifier);
+            total_points = filtered_zones.reduce((acc, z) => acc + (this.state.hr_point_system[z.name] * z.minutes), 0),
+            active_points = this.state.active_minutes * this.state.active_modifier;
 
-        totalPoints += stepPoints;
+        total_points += active_points;
 
         return (
             <div>
                 <h2>Dashboard</h2>
 
                 <section>
-                    <strong>Steps: </strong>{this.state.steps ? this.state.steps : null} = {stepPoints} points
+                    {zones.length > 0 ? <><strong>Active Minutes: </strong>{this.state.active_minutes} = {active_points} points</> : null}
 
                     {zones.length > 0 ? zones : <CircularProgress/>}
 
-                    {zones.length > 0 ? <><strong>Total</strong>: {totalPoints} points</> : null}
+                    {zones.length > 0 ? <><strong>Total</strong>: {total_points} points</> : null}
                 </section>
             </div>
         );

@@ -11,7 +11,7 @@ instance.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
 
-    if (error.response && error.response.data.errors[0].errorType === 'expired_token') {
+    if (error.response && error.response.data && error.response.data.errors[0].errorType === 'expired_token') {
         console.log('Token Expired - Refreshing token');
 
         fitbitTokenRenewal().then(r => {
