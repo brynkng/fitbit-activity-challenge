@@ -29,9 +29,9 @@ class Home extends React.Component {
         this.setState({open: false});
     };
 
-    showError(error) {
+    showError = (error) => {
         this.setState({open: true, snackbar_variant: 'error', snackbar_message: error});
-    }
+    };
 
     render() {
         return (

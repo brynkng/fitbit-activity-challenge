@@ -19,14 +19,15 @@ class Dashboard extends Component {
     componentDidMount() {
 
         getActivities().then(r => {
-            const zones = r.data.summary.heartRateZones,
-                active_minutes = r.data.summary.fairlyActiveMinutes + r.data.summary.veryActiveMinutes;
-
             // debugger
-            this.setState({zones: zones, active_minutes: active_minutes});
+            this.setState({zones: r.zones, active_minutes: r.active_minutes});
         }).catch(error => {
-            resetFitbitTokens();
-            this.props.history.push('/', {error: error.toString()});
+            if (error.response && error.response.status === 401) {
+                resetFitbitTokens();
+                this.props.history.push('/', {error: error.toString()});
+            } else {
+                this.props.showError(error.toString())
+            }
         });
     }
 
